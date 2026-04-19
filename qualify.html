@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stark Capital Deployment™ — Application</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #000000;
+    --gold: #F4C810;
+    --white: #FFFFFF;
+    --gold-dim: rgba(244,200,16,0.12);
+    --gold-border: rgba(244,200,16,0.3);
+    --white-dim: rgba(255,255,255,0.07);
+    --white-mid: rgba(255,255,255,0.55);
+    --white-soft: rgba(255,255,255,0.85);
+    --font-head: 'Montserrat', sans-serif;
+    --font-body: 'Lato', sans-serif;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ─── NOISE TEXTURE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ─── GOLD ACCENT LINE TOP ─── */
+  .gold-line-top {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--gold);
+    z-index: 100;
+  }
+
+  /* ─── WRAPPER ─── */
+  .app-wrapper {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px 60px;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    width: 100%;
+    max-width: 680px;
+    padding: 40px 0 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .header-eyebrow {
+    font-family: var(--font-head);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .header-title {
+    font-family: var(--font-head);
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    text-transform: uppercase;
+  }
+
+  /* ─── PROGRESS BAR ─── */
+  .progress-wrap {
+    width: 100%;
+    max-width: 680px;
+    margin-bottom: 48px;
+  }
+
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .progress-label {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--white-mid);
+    letter-spacing: 0.05em;
+  }
+
+  .progress-pct {
+    font-family: var(--font-head);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 2px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: width 0.45s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ─── CARD ─── */
+  .card {
+    width: 100%;
+    max-width: 680px;
+    background: var(--white-dim);
+    border: 1px solid var(--gold-border);
+    border-radius: 4px;
+    padding: 48px 48px 40px;
+    position: relative;
+    animation: slideUp 0.38s cubic-bezier(0.4,0,0.2,1) both;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0);    }
+  }
+
+  .card-step-num {
+    font-family: var(--font-head);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+  }
+
+  .card-question {
+    font-family: var(--font-head);
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.25;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+
+  .card-hint {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--white-mid);
+    line-height: 1.6;
+    margin-bottom: 36px;
+  }
+
+  /* ─── INPUTS ─── */
+  .input-field {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 3px;
+    padding: 16px 18px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .input-field::placeholder { color: rgba(255,255,255,0.3); }
+
+  .input-field:focus {
+    border-color: var(--gold);
+    background: rgba(244,200,16,0.05);
+  }
+
+  textarea.input-field {
+    resize: vertical;
+    min-height: 140px;
+    line-height: 1.6;
+  }
+
+  /* ─── CHOICE OPTIONS ─── */
+  .choices {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 0;
+  }
+
+  .choice-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 15px 18px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: border-color 0.18s, background 0.18s;
+    user-select: none;
+    background: rgba(255,255,255,0.03);
+  }
+
+  .choice-item:hover {
+    border-color: rgba(244,200,16,0.5);
+    background: var(--gold-dim);
+  }
+
+  .choice-item.selected {
+    border-color: var(--gold);
+    background: var(--gold-dim);
+  }
+
+  .choice-box {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border: 2px solid rgba(255,255,255,0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.18s;
+    position: relative;
+  }
+
+  .choice-item.selected .choice-box {
+    border-color: var(--gold);
+  }
+
+  .choice-box::after {
+    content: '';
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0;
+    transition: opacity 0.18s;
+  }
+
+  .choice-item.selected .choice-box::after {
+    opacity: 1;
+  }
+
+  /* Multi-select checkbox style */
+  .choice-item.multi .choice-box {
+    border-radius: 3px;
+  }
+
+  .choice-item.multi.selected .choice-box::after {
+    content: '✓';
+    width: auto; height: auto;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold);
+    background: none;
+    opacity: 1;
+  }
+
+  .choice-label {
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--white-soft);
+    line-height: 1.4;
+  }
+
+  /* ─── BUTTON ─── */
+  .btn-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 36px;
+  }
+
+  .btn-next {
+    font-family: var(--font-head);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--gold);
+    border: none;
+    border-radius: 3px;
+    padding: 16px 36px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.12s;
+    outline: none;
+  }
+
+  .btn-next:hover { background: #ffd630; }
+  .btn-next:active { transform: scale(0.98); }
+  .btn-next:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  .btn-back {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--white-mid);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 0;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(255,255,255,0.25);
+    transition: color 0.15s;
+    outline: none;
+  }
+
+  .btn-back:hover { color: var(--white); }
+
+  /* ─── WELCOME SCREEN ─── */
+  .welcome-screen {
+    width: 100%;
+    max-width: 680px;
+    padding: 56px 48px 52px;
+    border: 1px solid var(--gold-border);
+    border-radius: 4px;
+    background: var(--white-dim);
+    animation: slideUp 0.38s cubic-bezier(0.4,0,0.2,1) both;
+  }
+
+  .welcome-tag {
+    display: inline-block;
+    font-family: var(--font-head);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold-border);
+    padding: 5px 12px;
+    border-radius: 2px;
+    margin-bottom: 28px;
+  }
+
+  .welcome-headline {
+    font-family: var(--font-head);
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1.15;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    margin-bottom: 24px;
+  }
+
+  .welcome-headline span { color: var(--gold); }
+
+  .welcome-body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.75;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 36px;
+    max-width: 520px;
+  }
+
+  .welcome-detail {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--white-mid);
+    margin-bottom: 40px;
+  }
+
+  .welcome-divider {
+    width: 40px;
+    height: 2px;
+    background: var(--gold);
+    margin-bottom: 40px;
+  }
+
+  /* ─── DISQUALIFICATION SCREEN ─── */
+  .end-screen {
+    width: 100%;
+    max-width: 680px;
+    padding: 56px 48px 52px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 4px;
+    background: var(--white-dim);
+    animation: slideUp 0.38s cubic-bezier(0.4,0,0.2,1) both;
+  }
+
+  .end-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 28px;
+  }
+
+  .end-icon.disq { background: rgba(255,255,255,0.06); color: var(--white-mid); }
+  .end-icon.confirm { background: var(--gold-dim); border: 1px solid var(--gold-border); color: var(--gold); }
+
+  .end-headline {
+    font-family: var(--font-head);
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--white);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .end-body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.75;
+    color: rgba(255,255,255,0.72);
+    margin-bottom: 24px;
+  }
+
+  .end-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-head);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold-border);
+    padding-bottom: 2px;
+    transition: border-color 0.15s;
+    margin-top: 8px;
+  }
+
+  .end-link:hover { border-color: var(--gold); }
+
+  .confirm-sig {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--white-mid);
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    line-height: 1.7;
+  }
+
+  /* ─── ERROR STATE ─── */
+  .error-msg {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: #ff6b6b;
+    margin-top: 10px;
+    display: none;
+  }
+
+  .error-msg.visible { display: block; }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    width: 100%;
+    max-width: 680px;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-brand {
+    font-family: var(--font-head);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+  }
+
+  .footer-tagline {
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: rgba(255,255,255,0.2);
+    font-style: italic;
+  }
+
+  /* ─── LOADING STATE ─── */
+  .submitting-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .submitting-overlay.active { display: flex; }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(244,200,16,0.2);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .submitting-text {
+    font-family: var(--font-head);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 640px) {
+    .card, .welcome-screen, .end-screen {
+      padding: 36px 24px 32px;
+    }
+
+    .welcome-headline { font-size: 28px; }
+    .card-question { font-size: 21px; }
+
+    .btn-row { flex-wrap: wrap; }
+    .btn-next { width: 100%; text-align: center; padding: 18px; }
+
+    .footer { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="gold-line-top"></div>
+
+<div class="submitting-overlay" id="submittingOverlay">
+  <div class="spinner"></div>
+  <div class="submitting-text">Submitting Application…</div>
+</div>
+
+<div class="app-wrapper">
+
+  <!-- HEADER -->
+  <div class="header" id="mainHeader">
+    <div class="header-eyebrow">Stark Industries Property Group</div>
+    <div class="header-title">Stark Capital Deployment™</div>
+  </div>
+
+  <!-- PROGRESS BAR (hidden on welcome/end screens) -->
+  <div class="progress-wrap" id="progressWrap" style="display:none;">
+    <div class="progress-meta">
+      <span class="progress-label" id="progressLabel">Question 1 of 11</span>
+      <span class="progress-pct" id="progressPct">9%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:9%"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       WELCOME SCREEN
+  ════════════════════════════════════════════ -->
+  <div class="welcome-screen" id="screenWelcome">
+    <div class="welcome-tag">Private Application</div>
+    <div class="welcome-headline">This Is Not<br>a <span>Contact Form.</span></div>
+    <div class="welcome-divider"></div>
+    <div class="welcome-body">
+      This is a private application for investors ready to deploy $250,000+ into short-term rental assets.<br><br>
+      We work with a limited number of engagements each quarter. If you're serious about acquiring with discipline — not guessing — you're in the right place.
+    </div>
+    <div class="welcome-detail">This takes about 4 minutes. Answer honestly. Every question matters.</div>
+    <button class="btn-next" onclick="startForm()">Begin Application →</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       FORM STEPS
+  ════════════════════════════════════════════ -->
+  <div id="formContainer" style="display:none; width:100%; max-width:680px;">
+
+    <!-- STEP 1: Full Name -->
+    <div class="card" id="step1" data-step="1" style="display:none;">
+      <div class="card-step-num">Question 1 of 11</div>
+      <div class="card-question">What's your name?</div>
+      <input type="text" class="input-field" id="q1" placeholder="Full name" autocomplete="name">
+      <div class="error-msg" id="err1">Please enter your full name.</div>
+      <div class="btn-row">
+        <button class="btn-next" onclick="nextStep(1)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Email -->
+    <div class="card" id="step2" data-step="2" style="display:none;">
+      <div class="card-step-num">Question 2 of 11</div>
+      <div class="card-question">Best email to reach you?</div>
+      <input type="email" class="input-field" id="q2" placeholder="you@example.com" autocomplete="email">
+      <div class="error-msg" id="err2">Please enter a valid email address.</div>
+      <div class="btn-row">
+        <button class="btn-next" onclick="nextStep(2)">Continue →</button>
+        <button class="btn-back" onclick="prevStep(2)">Back</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Phone -->
+    <div class="card" id="step3" data-step="3" style="display:none;">
+      <div class="card-step-num">Question 3 of 11</div>
+      <div class="card-question">Best number for a short confirmation call?</div>
+      <input type="tel" class="input-field" id="q3" placeholder="(555) 000-0000" autocomplete="tel">
+      <div class="error-msg" id="err3">Please enter a phone number.</div>
+      <div class="btn-row">
+        <button class="btn-next" onclick="nextStep(3)">Continue →</button>
+        <button class="btn-back" onclick="prevStep(3)">Back</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: How Did You Find Us -->
+    <div class="card" id="step4" data-step="4" style="display:none;">
+      <div class="card-step-num">Question 4 of 11</div>
+      <div class="card-question">How did you find Stark Capital Deployment™?</div>
+      <div class="choices" id="q4choices">
+        <div class="choice-item" data-value="LinkedIn" onclick="selectSingle('q4choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">LinkedIn</div>
+        </div>
+        <div class="choice-item" data-value="CPA Referral" onclick="selectSingle('q4choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">CPA or financial advisor referral</div>
+        </div>
+        <div class="choice-item" data-value="Referral" onclick="selectSingle('q4choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">Colleague or peer referral</div>
+        </div>
+        <div class="choice-item" data-value="Organic" onclick="selectSingle('q4choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">Google / web search</div>
+        </div>
+        <div class="choice-item" data-value="Media" onclick="selectSingle('q4choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">Podcast or media</div>
+        </div>
+        <div class="choice-item" data-value="Other" onclick="selectSingle('q4choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">Other</div>
+        </div>
+      </div>
+      <div class="error-msg" id="err4">Please select an option.</div>
+      <div class="btn-row">
+        <button class="btn-next" onclick="nextStep(4)">Continue →</button>
+        <button class="btn-back" onclick="prevStep(4)">Back</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: Investor Type -->
+    <div class="card" id="step5" data-step="5" style="display:none;">
+      <div class="card-step-num">Question 5 of 11</div>
+      <div class="card-question">Which best describes you as an investor?</div>
+      <div class="choices" id="q5choices">
+        <div class="choice-item" data-value="W-2 Professional" onclick="selectSingle('q5choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">W-2 professional deploying capital alongside my income</div>
+        </div>
+        <div class="choice-item" data-value="Business Owner / Entrepreneur" onclick="selectSingle('q5choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">Business owner or entrepreneur</div>
+        </div>
+        <div class="choice-item" data-value="Executive / C-Suite" onclick="selectSingle('q5choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">Executive or C-suite</div>
+        </div>
+        <div class="choice-item" data-value="Doctor / Attorney / Licensed Professional" onclick="selectSingle('q5choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">Doctor, attorney, or licensed professional</div>
+        </div>
+        <div class="choice-item" data-value="Real Estate Investor" onclick="selectSingle('q5choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">Real estate investor expanding into STR</div>
+        </div>
+        <div class="choice-item" data-value="Family Office / Private Capital" onclick="selectSingle('q5choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">Family office or private capital</div>
+        </div>
+        <div class="choice-item" data-value="Other" onclick="selectSingle('q5choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">Other</div>
+        </div>
+      </div>
+      <div class="error-msg" id="err5">Please select an option.</div>
+      <div class="btn-row">
+        <button class="btn-next" onclick="nextStep(5)">Continue →</button>
+        <button class="btn-back" onclick="prevStep(5)">Back</button>
+      </div>
+    </div>
+
+    <!-- STEP 6: Deployable Capital (HARD QUALIFIER) -->
+    <div class="card" id="step6" data-step="6" style="display:none;">
+      <div class="card-step-num">Question 6 of 11</div>
+      <div class="card-question">How much capital are you prepared to deploy into your next STR acquisition?</div>
+      <div class="choices" id="q6choices">
+        <div class="choice-item" data-value="Less than $150,000" data-disqualify="true" onclick="selectSingle('q6choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">Less than $150,000</div>
+        </div>
+        <div class="choice-item" data-value="$150,000 – $249,999" data-disqualify="true" onclick="selectSingle('q6choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">$150,000 – $249,999</div>
+        </div>
+        <div class="choice-item" data-value="$250,000 – $499,999" onclick="selectSingle('q6choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">$250,000 – $499,999</div>
+        </div>
+        <div class="choice-item" data-value="$500,000 – $999,999" onclick="selectSingle('q6choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">$500,000 – $999,999</div>
+        </div>
+        <div class="choice-item" data-value="$1,000,000+" onclick="selectSingle('q6choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">$1,000,000+</div>
+        </div>
+      </div>
+      <div class="error-msg" id="err6">Please select an option.</div>
+      <div class="btn-row">
+        <button class="btn-next" onclick="nextStep(6)">Continue →</button>
+        <button class="btn-back" onclick="prevStep(6)">Back</button>
+      </div>
+    </div>
+
+    <!-- STEP 7: Timeline -->
+    <div class="card" id="step7" data-step="7" style="display:none;">
+      <div class="card-step-num">Question 7 of 11</div>
+      <div class="card-question">When are you looking to acquire?</div>
+      <div class="choices" id="q7choices">
+        <div class="choice-item" data-value="Within 60 days" onclick="selectSingle('q7choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">Within 60 days — I'm ready to move</div>
+        </div>
+        <div class="choice-item" data-value="Within 90 days" onclick="selectSingle('q7choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">Within 90 days — actively evaluating</div>
+        </div>
+        <div class="choice-item" data-value="3 to 6 months out" onclick="selectSingle('q7choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">3 to 6 months out — planning ahead</div>
+        </div>
+        <div class="choice-item" data-value="More than 6 months out" data-nurture="true" onclick="selectSingle('q7choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">More than 6 months out — early research</div>
+        </div>
+      </div>
+      <div class="error-msg" id="err7">Please select an option.</div>
+      <div class="btn-row">
+        <button class="btn-next" onclick="nextStep(7)">Continue →</button>
+        <button class="btn-back" onclick="prevStep(7)">Back</button>
+      </div>
+    </div>
+
+    <!-- STEP 8: What Have You Tried -->
+    <div class="card" id="step8" data-step="8" style="display:none;">
+      <div class="card-step-num">Question 8 of 11</div>
+      <div class="card-question">What have you already tried when it comes to STR investing?</div>
+      <div class="card-hint">Select everything that applies.</div>
+      <div class="choices" id="q8choices">
+        <div class="choice-item multi" data-value="Bought a STR without a clear underwriting framework" onclick="selectMulti(this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">Bought a STR without a clear underwriting framework</div>
+        </div>
+        <div class="choice-item multi" data-value="Worked with a local property manager who didn't deliver returns" onclick="selectMulti(this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">Worked with a local property manager who didn't deliver returns</div>
+        </div>
+        <div class="choice-item multi" data-value="Did my own research but felt uncertain before pulling the trigger" onclick="selectMulti(this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">Did my own research but felt uncertain before pulling the trigger</div>
+        </div>
+        <div class="choice-item multi" data-value="Consulted a real estate agent who didn't specialize in STR" onclick="selectMulti(this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">Consulted a real estate agent who didn't specialize in STR</div>
+        </div>
+        <div class="choice-item multi" data-value="Nothing — this is my first move into STR" onclick="selectMulti(this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">Nothing — this is my first move into STR</div>
+        </div>
+        <div class="choice-item multi" data-value="Other" onclick="selectMulti(this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">Other</div>
+        </div>
+      </div>
+      <div class="error-msg" id="err8">Please select at least one option.</div>
+      <div class="btn-row">
+        <button class="btn-next" onclick="nextStep(8)">Continue →</button>
+        <button class="btn-back" onclick="prevStep(8)">Back</button>
+      </div>
+    </div>
+
+    <!-- STEP 9: What's Holding You Back -->
+    <div class="card" id="step9" data-step="9" style="display:none;">
+      <div class="card-step-num">Question 9 of 11</div>
+      <div class="card-question">What's the biggest thing stopping you from deploying capital into STR right now?</div>
+      <div class="card-hint">Pick what resonates.</div>
+      <div class="choices" id="q9choices">
+        <div class="choice-item multi" data-value="I don't know which markets actually perform — the data is overwhelming" onclick="selectMulti(this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">I don't know which markets actually perform — the data is overwhelming</div>
+        </div>
+        <div class="choice-item multi" data-value="I'm not confident in my underwriting — I don't want to make a $300k mistake" onclick="selectMulti(this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">I'm not confident in my underwriting — I don't want to make a $300k mistake</div>
+        </div>
+        <div class="choice-item multi" data-value="I can't find properties that pencil at current prices" onclick="selectMulti(this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">I can't find properties that pencil at current prices</div>
+        </div>
+        <div class="choice-item multi" data-value="I'm concerned about STR regulations gutting my returns" onclick="selectMulti(this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">I'm concerned about STR regulations gutting my returns</div>
+        </div>
+        <div class="choice-item multi" data-value="I don't have a trusted acquisition partner in my corner" onclick="selectMulti(this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">I don't have a trusted acquisition partner in my corner</div>
+        </div>
+        <div class="choice-item multi" data-value="I've been burned before and need more certainty this time" onclick="selectMulti(this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">I've been burned before and need more certainty this time</div>
+        </div>
+      </div>
+      <div class="error-msg" id="err9">Please select at least one option.</div>
+      <div class="btn-row">
+        <button class="btn-next" onclick="nextStep(9)">Continue →</button>
+        <button class="btn-back" onclick="prevStep(9)">Back</button>
+      </div>
+    </div>
+
+    <!-- STEP 10: Desired Outcome -->
+    <div class="card" id="step10" data-step="10" style="display:none;">
+      <div class="card-step-num">Question 10 of 11</div>
+      <div class="card-question">What does a successful STR acquisition look like for you — specifically?</div>
+      <div class="card-hint">Be direct. What return profile are you targeting, what timeline, and what does winning look like 12 months from now?</div>
+      <textarea class="input-field" id="q10" placeholder="Describe your target outcome…"></textarea>
+      <div class="error-msg" id="err10">Please share your desired outcome.</div>
+      <div class="btn-row">
+        <button class="btn-next" onclick="nextStep(10)">Continue →</button>
+        <button class="btn-back" onclick="prevStep(10)">Back</button>
+      </div>
+    </div>
+
+    <!-- STEP 11: Decision Authority -->
+    <div class="card" id="step11" data-step="11" style="display:none;">
+      <div class="card-step-num">Question 11 of 11</div>
+      <div class="card-question">Are you the decision-maker on this acquisition?</div>
+      <div class="choices" id="q11choices">
+        <div class="choice-item" data-value="Sole Decision-Maker" onclick="selectSingle('q11choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">I make the final call — no one else needs to be involved</div>
+        </div>
+        <div class="choice-item" data-value="Decision-Maker with Partner" onclick="selectSingle('q11choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">I make the call, but I'll loop in a spouse or partner</div>
+        </div>
+        <div class="choice-item" data-value="Recommender" onclick="selectSingle('q11choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">I make the recommendation, but a partner or board approves it</div>
+        </div>
+        <div class="choice-item" data-value="Researching on Behalf of Someone Else" data-soft-disqualify="true" onclick="selectSingle('q11choices',this)">
+          <div class="choice-box"></div>
+          <div class="choice-label">I'm researching on behalf of someone else</div>
+        </div>
+      </div>
+      <div class="error-msg" id="err11">Please select an option.</div>
+      <div class="btn-row">
+        <button class="btn-next" onclick="submitForm()">Submit Application →</button>
+        <button class="btn-back" onclick="prevStep(11)">Back</button>
+      </div>
+    </div>
+
+  </div><!-- /formContainer -->
+
+  <!-- ══════════════════════════════════════════
+       DISQUALIFICATION SCREEN
+  ════════════════════════════════════════════ -->
+  <div class="end-screen" id="screenDisqualify" style="display:none;">
+    <div class="end-icon disq">✕</div>
+    <div class="end-headline">Not the Right Fit<br>Right Now.</div>
+    <div class="end-body">
+      Based on your answers, Stark Capital Deployment™ isn't the right fit right now.<br><br>
+      Our engagements start at $250,000 in deployable capital and are built for investors who are acquisition-ready, not in the research phase.<br><br>
+      That said — if your situation changes or you're closer to ready than you think, reach back out. The right timing makes all the difference.
+    </div>
+    <div class="end-body" style="margin-bottom:8px;">
+      In the meantime, follow along on LinkedIn — we share market insights, underwriting frameworks, and STR investment strategy there regularly.
+    </div>
+    <a href="https://linkedin.com/in/joe-stark" target="_blank" rel="noopener" class="end-link">
+      Follow on LinkedIn →
+    </a>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SOFT DISQUALIFICATION (researching for others)
+  ════════════════════════════════════════════ -->
+  <div class="end-screen" id="screenSoftDisqualify" style="display:none;">
+    <div class="end-icon disq">→</div>
+    <div class="end-headline">Let's Connect<br>the Right Person.</div>
+    <div class="end-body">
+      We built SCD™ to work directly with the decision-maker — the person whose capital is on the line and whose signature closes the deal.<br><br>
+      If you're researching on their behalf, we'd love to connect with them directly. Forward this link or have them reach out through LinkedIn.
+    </div>
+    <a href="https://linkedin.com/in/joe-stark" target="_blank" rel="noopener" class="end-link">
+      Connect on LinkedIn →
+    </a>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       CONFIRMATION SCREEN
+  ════════════════════════════════════════════ -->
+  <div class="end-screen" id="screenConfirm" style="display:none;">
+    <div class="end-icon confirm">✓</div>
+    <div class="end-headline">Application<br>Received.</div>
+    <div class="end-body">
+      Here's what happens next:<br><br>
+      We review every application personally. If you're a fit for our current quarter, someone from our team will reach out within 1 business day to schedule a Capital Alignment Session — a 30-minute call to diagnose your situation and determine if we can get you to a qualified acquisition.<br><br>
+      No sales pitch. No pressure. Just a direct conversation about whether we're the right partner for your next move.
+    </div>
+    <div class="end-body">
+      If you don't hear from us within 2 business days, your application is on the waitlist for Q3 engagements.
+    </div>
+    <div class="confirm-sig">
+      — The Stark Capital Deployment™ Team<br>
+      <strong style="color:var(--white-soft);">Joe Stark</strong><br>
+      Stark Capital Deployment™ · Stark Industries Property Group<br>
+      <em style="color:var(--gold); font-style:italic;">Acquire With Certainty.</em>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer" id="mainFooter">
+    <span class="footer-brand">Stark Capital Deployment™ · Stark Industries Property Group</span>
+    <span class="footer-tagline">Acquire With Certainty.</span>
+  </div>
+
+</div><!-- /app-wrapper -->
+
+<script>
+  // ─── STATE ───────────────────────────────────────────────────────────────────
+  const WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/18449482/ujikzod/';
+  const TOTAL_STEPS = 11;
+  let currentStep = 0;
+  let isDisqualified = false;
+  let isSoftDisqualified = false;
+  let isNurture = false;
+
+  const formData = {};
+
+  // ─── WELCOME → FORM ─────────────────────────────────────────────────────────
+  function startForm() {
+    document.getElementById('screenWelcome').style.display = 'none';
+    document.getElementById('progressWrap').style.display = 'block';
+    document.getElementById('formContainer').style.display = 'block';
+    goToStep(1);
+  }
+
+  // ─── STEP NAVIGATION ─────────────────────────────────────────────────────────
+  function goToStep(n) {
+    // Hide all steps
+    for (let i = 1; i <= TOTAL_STEPS; i++) {
+      const el = document.getElementById('step' + i);
+      if (el) el.style.display = 'none';
+    }
+    // Show target step
+    const target = document.getElementById('step' + n);
+    if (target) {
+      target.style.display = 'block';
+      // Restart animation
+      target.style.animation = 'none';
+      void target.offsetWidth;
+      target.style.animation = '';
+    }
+    currentStep = n;
+    updateProgress(n);
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateProgress(step) {
+    const pct = Math.round((step / TOTAL_STEPS) * 100);
+    document.getElementById('progressLabel').textContent = 'Question ' + step + ' of ' + TOTAL_STEPS;
+    document.getElementById('progressPct').textContent = pct + '%';
+    document.getElementById('progressFill').style.width = pct + '%';
+  }
+
+  function prevStep(current) {
+    if (current > 1) goToStep(current - 1);
+  }
+
+  // ─── VALIDATION & LOGIC JUMPS ────────────────────────────────────────────────
+  function nextStep(step) {
+    // Clear error
+    const errEl = document.getElementById('err' + step);
+    if (errEl) errEl.classList.remove('visible');
+
+    // Validate
+    if (!validate(step)) return;
+
+    // Save value
+    saveValue(step);
+
+    // Logic jumps
+    if (step === 5) {
+      // Q5: investor type — "Other" routes to disqualify
+      const selected = getSelected('q5choices');
+      if (selected === 'Other') {
+        showDisqualify();
+        return;
+      }
+    }
+
+    if (step === 6) {
+      // Q6: capital — sub-$250k disqualify
+      const sel = document.querySelector('#q6choices .selected');
+      if (sel && sel.dataset.disqualify === 'true') {
+        showDisqualify();
+        return;
+      }
+      // Mark nurture if capital < $250k (already caught above, but safe)
+    }
+
+    if (step === 7) {
+      // Q7: timeline — 6+ months = nurture tag but continue
+      const sel = document.querySelector('#q7choices .selected');
+      if (sel && sel.dataset.nurture === 'true') {
+        isNurture = true;
+      }
+    }
+
+    if (step === 11) {
+      // handled by submitForm()
+      return;
+    }
+
+    goToStep(step + 1);
+  }
+
+  function validate(step) {
+    const errEl = document.getElementById('err' + step);
+    let valid = true;
+
+    if (step === 1) {
+      const val = document.getElementById('q1').value.trim();
+      if (!val) valid = false;
+    } else if (step === 2) {
+      const val = document.getElementById('q2').value.trim();
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRe.test(val)) valid = false;
+    } else if (step === 3) {
+      const val = document.getElementById('q3').value.trim();
+      if (!val || val.length < 7) valid = false;
+    } else if (step === 4) {
+      if (!getSelected('q4choices')) valid = false;
+    } else if (step === 5) {
+      if (!getSelected('q5choices')) valid = false;
+    } else if (step === 6) {
+      if (!getSelected('q6choices')) valid = false;
+    } else if (step === 7) {
+      if (!getSelected('q7choices')) valid = false;
+    } else if (step === 8) {
+      if (getMultiSelected('q8choices').length === 0) valid = false;
+    } else if (step === 9) {
+      if (getMultiSelected('q9choices').length === 0) valid = false;
+    } else if (step === 10) {
+      const val = document.getElementById('q10').value.trim();
+      if (!val) valid = false;
+    } else if (step === 11) {
+      if (!getSelected('q11choices')) valid = false;
+    }
+
+    if (!valid && errEl) errEl.classList.add('visible');
+    return valid;
+  }
+
+  function saveValue(step) {
+    if (step === 1) formData.fullName = document.getElementById('q1').value.trim();
+    if (step === 2) formData.email = document.getElementById('q2').value.trim();
+    if (step === 3) formData.phone = document.getElementById('q3').value.trim();
+    if (step === 4) formData.leadSource = getSelected('q4choices');
+    if (step === 5) formData.investorType = getSelected('q5choices');
+    if (step === 6) formData.deployableCapital = getSelected('q6choices');
+    if (step === 7) formData.acquisitionTimeline = getSelected('q7choices');
+    if (step === 8) formData.whatTriedBefore = getMultiSelected('q8choices');
+    if (step === 9) formData.holdingBack = getMultiSelected('q9choices');
+    if (step === 10) formData.desiredOutcome = document.getElementById('q10').value.trim();
+    if (step === 11) formData.decisionAuthority = getSelected('q11choices');
+  }
+
+  // ─── SELECTION HELPERS ───────────────────────────────────────────────────────
+  function selectSingle(containerId, item) {
+    const container = document.getElementById(containerId);
+    container.querySelectorAll('.choice-item').forEach(el => el.classList.remove('selected'));
+    item.classList.add('selected');
+  }
+
+  function selectMulti(item) {
+    item.classList.toggle('selected');
+  }
+
+  function getSelected(containerId) {
+    const sel = document.querySelector('#' + containerId + ' .selected');
+    return sel ? sel.dataset.value : null;
+  }
+
+  function getMultiSelected(containerId) {
+    const selected = document.querySelectorAll('#' + containerId + ' .selected');
+    return Array.from(selected).map(el => el.dataset.value);
+  }
+
+  // ─── DISQUALIFICATION ────────────────────────────────────────────────────────
+  function showDisqualify() {
+    hideAll();
+    document.getElementById('screenDisqualify').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function showSoftDisqualify() {
+    hideAll();
+    document.getElementById('screenSoftDisqualify').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function hideAll() {
+    document.getElementById('progressWrap').style.display = 'none';
+    document.getElementById('formContainer').style.display = 'none';
+    document.getElementById('screenWelcome').style.display = 'none';
+  }
+
+  // ─── FORM SUBMISSION ─────────────────────────────────────────────────────────
+  async function submitForm() {
+    // Validate step 11 first
+    const errEl = document.getElementById('err11');
+    if (errEl) errEl.classList.remove('visible');
+    if (!validate(11)) return;
+    saveValue(11);
+
+    // Logic jump for Q11 — soft disqualify
+    if (formData.decisionAuthority === 'Researching on Behalf of Someone Else') {
+      showSoftDisqualify();
+      return;
+    }
+
+    // Build payload
+    const payload = {
+      full_name: formData.fullName,
+      email: formData.email,
+      phone: formData.phone,
+      lead_source: formData.leadSource,
+      investor_type: formData.investorType,
+      deployable_capital: formData.deployableCapital,
+      acquisition_timeline: formData.acquisitionTimeline,
+      what_tried_before: formData.whatTriedBefore,
+      holding_back: formData.holdingBack,
+      desired_outcome: formData.desiredOutcome,
+      decision_authority: formData.decisionAuthority,
+      is_nurture: isNurture,
+      tags: buildTags(),
+      submitted_at: new Date().toISOString()
+    };
+
+    // Show loading
+    document.getElementById('submittingOverlay').classList.add('active');
+
+    try {
+      await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        mode: 'no-cors',
+        body: JSON.stringify(payload)
+      });
+    } catch (e) {
+      // Proceed to confirmation regardless — no-cors swallows errors
+      console.warn('Webhook delivery note:', e);
+    }
+
+    // Hide loading
+    document.getElementById('submittingOverlay').classList.remove('active');
+
+    // Show confirmation
+    hideAll();
+    document.getElementById('screenConfirm').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function buildTags() {
+    const tags = ['Revenue Engine: Advisory'];
+
+    // Lead source tag
+    const srcMap = {
+      'LinkedIn': 'Source: LinkedIn',
+      'CPA Referral': 'Source: CPA Referral',
+      'Referral': 'Source: Referral',
+      'Organic': 'Source: Organic Search',
+      'Media': 'Source: Media',
+      'Other': 'Source: Other'
+    };
+    if (formData.leadSource && srcMap[formData.leadSource]) {
+      tags.push(srcMap[formData.leadSource]);
+    }
+
+    // Timeline tag
+    if (formData.acquisitionTimeline === 'Within 60 days') tags.push('Timeline: Hot');
+    else if (formData.acquisitionTimeline === 'Within 90 days') tags.push('Timeline: Warm');
+    else if (formData.acquisitionTimeline === 'More than 6 months out') tags.push('Nurture — SCD™');
+
+    // Capital tier
+    if (formData.deployableCapital === '$1,000,000+') tags.push('Capital Tier: $1M+');
+    else if (formData.deployableCapital === '$500,000 – $999,999') tags.push('Capital Tier: $500k+');
+    else if (formData.deployableCapital === '$250,000 – $499,999') tags.push('Capital Tier: $250k+');
+
+    // Investor type premium
+    if (formData.investorType === 'Family Office / Private Capital') {
+      tags.push('Investor Type: PE-Adjacent / Family Office');
+    }
+
+    return tags;
+  }
+
+  // ─── KEYBOARD SUPPORT ────────────────────────────────────────────────────────
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && currentStep > 0) {
+      const activeTag = document.activeElement ? document.activeElement.tagName : '';
+      // Don't intercept Enter in textarea
+      if (activeTag !== 'TEXTAREA') {
+        e.preventDefault();
+        if (currentStep === 11) {
+          submitForm();
+        } else if (currentStep > 0) {
+          nextStep(currentStep);
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>
