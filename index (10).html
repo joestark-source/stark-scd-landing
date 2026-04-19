@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stark Capital Deployment™ — STR Market Analysis & Consulting</title>
+<meta name="description" content="Operator-built STR market analysis and consulting for serious investors. Get the deal analysis that tells you if the numbers actually work before you wire the money.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #000000;
+    --gold: #F4C810;
+    --gold-dark: #c9a40d;
+    --gold-dim: rgba(244,200,16,0.10);
+    --gold-border: rgba(244,200,16,0.25);
+    --white: #ffffff;
+    --off-white: rgba(255,255,255,0.88);
+    --muted: rgba(255,255,255,0.50);
+    --surface: #0a0a0a;
+    --surface2: #111111;
+    --surface3: #161616;
+  }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gold-border);
+    padding: 0 48px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-brand {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-brand span { color: var(--gold); }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-cta {
+    background: var(--gold) !important;
+    color: var(--black) !important;
+    padding: 9px 20px;
+    font-size: 10px !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--gold-dark) !important; }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 120px;
+    background: linear-gradient(to bottom, transparent, var(--black));
+    pointer-events: none;
+  }
+
+  /* diagonal gold accent */
+  .hero-accent {
+    position: absolute;
+    top: 0; right: -200px;
+    width: 600px;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 40%, rgba(244,200,16,0.04) 100%);
+    pointer-events: none;
+  }
+
+  .hero-grid {
+    max-width: 1160px;
+    margin: 0 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .hero-hook {
+    font-family: 'Lato', sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 32px;
+    max-width: 560px;
+    padding-left: 20px;
+    border-left: 2px solid var(--gold-border);
+  }
+
+  .hero h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(36px, 4.5vw, 58px);
+    font-weight: 900;
+    line-height: 1.06;
+    color: var(--white);
+    margin-bottom: 28px;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: 17px;
+    color: var(--off-white);
+    max-width: 520px;
+    margin-bottom: 44px;
+    line-height: 1.75;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--black);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    text-decoration: none;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .btn-primary:hover {
+    background: var(--gold-dark);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    display: inline-block;
+    border: 1px solid var(--gold-border);
+    color: var(--off-white);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 15px 32px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  /* Hero side card */
+  .hero-card {
+    background: var(--surface);
+    border: 1px solid var(--gold-border);
+    padding: 40px;
+    position: relative;
+  }
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--gold);
+  }
+  .hero-card-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .hero-stat {
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 16px 0;
+  }
+  .hero-stat:last-of-type { border-bottom: none; }
+  .hero-stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .hero-stat-val {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--white);
+  }
+  .hero-stat-val span { color: var(--gold); }
+
+  /* ─── SECTION BASE ─── */
+  section {
+    position: relative;
+    z-index: 1;
+  }
+  .container {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+  .section-pad { padding: 100px 0; }
+
+  .eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  h2.section-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(28px, 3vw, 42px);
+    font-weight: 900;
+    line-height: 1.12;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+  h2.section-title em {
+    font-style: normal;
+    color: var(--gold);
+  }
+
+  /* ─── PROBLEM SECTION ─── */
+  .problem {
+    background: var(--surface);
+    border-top: 1px solid var(--gold-border);
+    border-bottom: 1px solid var(--gold-border);
+  }
+
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .problem-text p {
+    font-size: 16px;
+    color: var(--off-white);
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+  .problem-text p:last-child { margin-bottom: 0; }
+
+  .problem-callout {
+    background: var(--black);
+    border: 1px solid var(--gold-border);
+    border-left: 3px solid var(--gold);
+    padding: 36px;
+  }
+  .problem-callout p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--white);
+    margin-bottom: 0;
+  }
+  .problem-callout p em {
+    font-style: normal;
+    color: var(--gold);
+  }
+
+  .problem-list {
+    list-style: none;
+    margin-top: 28px;
+  }
+  .problem-list li {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    font-size: 15px;
+    color: var(--off-white);
+    line-height: 1.7;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .problem-list li:last-child { border-bottom: none; }
+  .problem-list li::before {
+    content: '—';
+    color: var(--gold);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ─── ABOUT SECTION ─── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 0 48px;
+    align-items: start;
+  }
+  .about-line {
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    margin: 8px auto 0;
+  }
+  .about-content p {
+    font-size: 17px;
+    color: var(--off-white);
+    line-height: 1.85;
+    margin-bottom: 22px;
+  }
+  .about-content p:last-child { margin-bottom: 0; }
+  .about-content strong { color: var(--white); font-weight: 700; }
+
+  /* ─── SERVICES ─── */
+  .services { background: var(--surface); }
+
+  .services-intro {
+    font-size: 17px;
+    color: var(--off-white);
+    max-width: 640px;
+    margin-bottom: 56px;
+    line-height: 1.75;
+  }
+
+  .tiers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-bottom: 48px;
+  }
+
+  .tier-card {
+    background: var(--black);
+    padding: 44px 36px;
+    position: relative;
+    transition: background 0.2s;
+  }
+  .tier-card:hover { background: #0c0c0c; }
+
+  .tier-card.featured {
+    background: var(--gold-dim);
+    border-top: 2px solid var(--gold);
+  }
+  .tier-card.featured::before {
+    content: 'MOST POPULAR';
+    position: absolute;
+    top: -1px; left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background: var(--gold);
+    color: var(--black);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    padding: 4px 12px;
+    white-space: nowrap;
+    display: none;
+  }
+
+  .tier-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .tier-price {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 44px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+  .tier-desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 28px;
+    line-height: 1.6;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .tier-features {
+    list-style: none;
+    margin-bottom: 36px;
+  }
+  .tier-features li {
+    font-size: 14px;
+    color: var(--off-white);
+    line-height: 1.6;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .tier-features li::before {
+    content: '✓';
+    color: var(--gold);
+    font-weight: 700;
+    flex-shrink: 0;
+    font-size: 13px;
+    margin-top: 1px;
+  }
+  .tier-features li:last-child { border-bottom: none; }
+
+  /* ─── WHO THIS IS FOR ─── */
+  .for-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+
+  .for-card {
+    background: var(--surface);
+    padding: 48px 44px;
+  }
+  .for-card.not-for {
+    background: var(--surface2);
+  }
+
+  .for-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .for-card .for-label { color: var(--gold); }
+  .for-card.not-for .for-label { color: rgba(255,255,255,0.3); }
+
+  .for-list {
+    list-style: none;
+  }
+  .for-list li {
+    font-size: 15px;
+    color: var(--off-white);
+    line-height: 1.7;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .for-list li:last-child { border-bottom: none; }
+  .for-card .for-list li::before {
+    content: '→';
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .for-card.not-for .for-list li { color: var(--muted); }
+  .for-card.not-for .for-list li::before {
+    content: '×';
+    color: rgba(255,255,255,0.2);
+    flex-shrink: 0;
+  }
+
+  /* ─── CTA SECTION ─── */
+  .cta-section {
+    background: var(--gold);
+    padding: 100px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 10px,
+      rgba(0,0,0,0.04) 10px,
+      rgba(0,0,0,0.04) 11px
+    );
+    pointer-events: none;
+  }
+
+  .cta-inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .cta-eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.5);
+    margin-bottom: 20px;
+  }
+  .cta-section h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(28px, 3.5vw, 46px);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--black);
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+  }
+  .cta-section p {
+    font-size: 17px;
+    color: rgba(0,0,0,0.7);
+    margin-bottom: 40px;
+    line-height: 1.7;
+  }
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn-dark {
+    display: inline-block;
+    background: var(--black);
+    color: var(--gold);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-dark:hover { background: #111; transform: translateY(-1px); }
+  .btn-outline-dark {
+    display: inline-block;
+    border: 2px solid rgba(0,0,0,0.3);
+    color: var(--black);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-outline-dark:hover { border-color: var(--black); background: rgba(0,0,0,0.06); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--black);
+    border-top: 1px solid var(--gold-border);
+    padding: 64px 0 40px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .footer-brand-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+  .footer-brand-name span { color: var(--gold); }
+  .footer-tagline {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  .footer-company {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+  }
+
+  .footer-col-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+  }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 10px; }
+  .footer-links a {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+
+  .footer-disclaimer {
+    font-size: 11px;
+    color: rgba(255,255,255,0.28);
+    line-height: 1.7;
+    font-style: italic;
+    margin-bottom: 28px;
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-copy {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.18);
+  }
+  .footer-copy span { color: rgba(244,200,16,0.4); }
+
+  /* ─── DIVIDERS ─── */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 56px;
+  }
+  .section-divider .line { flex: 1; height: 1px; background: var(--gold-border); }
+
+  /* ─── FADE IN ─── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── MOBILE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+
+    .hero { padding: 100px 24px 60px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+    .hero-card { display: none; }
+
+    .container { padding: 0 24px; }
+    .section-pad { padding: 72px 0; }
+
+    .problem-grid { grid-template-columns: 1fr; gap: 40px; }
+    .tiers-grid { grid-template-columns: 1fr; gap: 2px; }
+    .for-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 36px; }
+
+    .hero h1 { font-size: 36px; }
+    .cta-section h2 { font-size: 28px; }
+
+    .about-grid { grid-template-columns: 1fr; }
+    .about-line { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .hero-ctas { flex-direction: column; align-items: flex-start; }
+    .cta-buttons { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <a href="#" class="nav-brand">Stark <span>Capital Deployment™</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#who">Who It's For</a></li>
+    <li><a href="https://api.leadconnectorhq.com/widget/booking/etlzKVWmt6xc1fz2fZMh" class="nav-cta">Book a Call</a></li>
+  </ul>
+</nav>
+
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-accent"></div>
+  <div class="hero-grid container">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Stark Capital Deployment™</div>
+      <p class="hero-hook">"The deal looks right. The numbers feel close. But 'feels close' is how investors lose six figures on a property that was never going to perform — and you know it."</p>
+      <h1>Stop Guessing. Get the Analysis That Tells You If the Deal <em>Actually Works.</em></h1>
+      <p class="hero-sub">Stark Capital Deployment™ gives serious investors the market analysis, pro formas, and operator perspective they need to make confident STR acquisition decisions — before they wire the money.</p>
+      <div class="hero-ctas">
+        <a href="https://scd-landing.netlify.app/qualify" class="btn-primary">Submit Your Deal for Analysis</a>
+        <a href="https://api.leadconnectorhq.com/widget/booking/etlzKVWmt6xc1fz2fZMh" class="btn-secondary">Book a 15-Minute Call</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-label">What You Get</div>
+      <div class="hero-stat">
+        <div class="hero-stat-label">Deliverable</div>
+        <div class="hero-stat-val">Full <span>Pro Forma</span></div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-label">Data Source</div>
+        <div class="hero-stat-val">Live <span>AirDNA</span></div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-label">Turnaround</div>
+        <div class="hero-stat-val"><span>5</span> Business Days</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-label">Included</div>
+        <div class="hero-stat-val"><span>90-Min</span> Strategy Call</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ─── PROBLEM ─── -->
+<section class="problem section-pad" id="problem">
+  <div class="container">
+    <div class="problem-grid">
+      <div class="fade-in">
+        <div class="eyebrow">The Problem</div>
+        <h2 class="section-title">The spreadsheet isn't the problem.<br><em>The assumptions feeding it are.</em></h2>
+        <div class="problem-text">
+          <p>Most STR investors build their own pro formas. They pull a few comps off Airbnb, guess at an occupancy rate, and assume their nightly rate lands somewhere in the middle of what they see listed. Then they close.</p>
+          <p>Six months later, the property is underperforming. Not because the market is bad. Because the analysis didn't account for seasonal demand curves, channel mix realities, ramp-up timelines, or what comps actually earn versus what they list for.</p>
+          <p>There's a gap between what a property looks like it will earn and what it will actually earn once it's live on the OTAs. Closing that gap before you buy — that's what this service is built for.</p>
+        </div>
+      </div>
+      <div class="fade-in">
+        <div class="problem-callout">
+          <p>Most STR pro formas are built by people who <em>need the deal to close.</em> Not by operators who have to live with the numbers.</p>
+        </div>
+        <ul class="problem-list">
+          <li>Seller projections cherry-pick peak months and ignore ramp-up</li>
+          <li>Wrong comp sets inflate ADR assumptions from the start</li>
+          <li>Platform fee changes from 2025 make old models structurally wrong</li>
+          <li>Regulatory risk goes unresearched until it's too late</li>
+          <li>One scenario — the best case — drives a $300K decision</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ─── ABOUT ─── -->
+<section class="section-pad" id="about">
+  <div class="container">
+    <div class="section-divider fade-in">
+      <div class="line"></div>
+      <div class="eyebrow" style="margin-bottom:0;">About Joe Stark</div>
+      <div class="line"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-line"></div>
+      <div class="about-content fade-in">
+        <h2 class="section-title" style="margin-bottom:32px;">You're getting an active STR operator's <em>read on your deal.</em></h2>
+        <p>I'm Joe Stark. I manage short-term rentals in Fort Wayne, Indiana — which means I live inside the data every day. I'm in AirDNA pulling comp sets. I'm watching demand signals shift by season. I'm pricing properties and watching what actually converts versus what sits.</p>
+        <p>When I analyze a deal for you, you're not getting a formula someone built in 2021 and never updated. You're getting an operator's real perspective on whether the numbers work — and what it would actually take to make the property perform.</p>
+        <p><strong>This is consulting. This is market analysis.</strong> This is me telling you what I see in the data, based on experience running actual properties.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ─── SERVICES ─── -->
+<section class="services section-pad" id="services">
+  <div class="container">
+    <div class="fade-in">
+      <div class="eyebrow">Services</div>
+      <h2 class="section-title">Choose the level of analysis<br>your deal requires.</h2>
+      <p class="services-intro">Every engagement is built from live market data, real comp sets, and operator experience. Choose based on where you are in the acquisition process.</p>
+    </div>
+
+    <div class="tiers-grid">
+      <!-- Market Scan -->
+      <div class="tier-card fade-in">
+        <div class="tier-name">Market Scan</div>
+        <div class="tier-price">$1,500</div>
+        <p class="tier-desc">For investors evaluating a market before identifying a specific property.</p>
+        <ul class="tier-features">
+          <li>Market-level demand analysis: seasonality, supply trends, occupancy patterns</li>
+          <li>Top-performing property types and bedroom count benchmarks</li>
+          <li>ADR and RevPAR ranges for the target market</li>
+          <li>Summary report with market scoring and operator commentary</li>
+          <li>60-minute debrief call</li>
+        </ul>
+        <a href="https://scd-landing.netlify.app/qualify" class="btn-secondary" style="display:inline-block;width:100%;text-align:center;">Submit Your Deal for Analysis</a>
+      </div>
+
+      <!-- Comprehensive Analysis -->
+      <div class="tier-card featured fade-in">
+        <div class="tier-name">Comprehensive Analysis</div>
+        <div class="tier-price">$3,500</div>
+        <p class="tier-desc">For investors ready to go deep on a specific property before committing capital.</p>
+        <ul class="tier-features">
+          <li>Full market demand analysis for the target zip code or submarket</li>
+          <li>Comp set identification — 8–12 comparable active listings, actual performance data</li>
+          <li>Projected ADR, occupancy rate, and RevPAR by season</li>
+          <li>Pro forma financial model — revenue, expenses, NOI, cash-on-cash return, cap rate</li>
+          <li>Ramp-up timeline and realistic Year 1 revenue expectation</li>
+          <li>Regulatory risk assessment — STR ordinance research for the target market</li>
+          <li>Written deal analysis report with summary, findings, and operator notes</li>
+          <li>90-minute strategy call to walk through the findings and answer your questions</li>
+        </ul>
+        <a href="https://scd-landing.netlify.app/qualify" class="btn-primary" style="display:inline-block;width:100%;text-align:center;">Submit Your Deal for Analysis</a>
+      </div>
+
+      <!-- Portfolio Advisory -->
+      <div class="tier-card fade-in">
+        <div class="tier-name">Portfolio Advisory</div>
+        <div class="tier-price">$7,500</div>
+        <p class="tier-desc">For investors deploying $500K+ across multiple acquisitions or existing operators looking to pressure-test their portfolio.</p>
+        <ul class="tier-features">
+          <li>Everything in Comprehensive Analysis, applied across 3–5 properties or markets</li>
+          <li>Portfolio-level pro forma and capital deployment strategy</li>
+          <li>Market prioritization framework — which market, which property type, in what order</li>
+          <li>Three 90-minute advisory sessions over 30 days</li>
+          <li>Ongoing email access during the engagement</li>
+        </ul>
+        <a href="https://scd-landing.netlify.app/qualify" class="btn-secondary" style="display:inline-block;width:100%;text-align:center;">Submit Your Deal for Analysis</a>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding-top:8px;" class="fade-in">
+      <p style="font-size:14px;color:var(--muted);margin-bottom:20px;">Not sure which level fits your deal?</p>
+      <a href="https://api.leadconnectorhq.com/widget/booking/etlzKVWmt6xc1fz2fZMh" class="btn-secondary">Book a 15-Minute Call</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ─── WHO THIS IS FOR ─── -->
+<section class="section-pad" id="who">
+  <div class="container">
+    <div class="fade-in" style="margin-bottom:48px;">
+      <div class="eyebrow">Who It's For</div>
+      <h2 class="section-title">This isn't for everyone.<br><em>Here's who it is.</em></h2>
+    </div>
+    <div class="for-grid fade-in">
+      <div class="for-card">
+        <div class="for-label">Right Fit</div>
+        <ul class="for-list">
+          <li>You have $250K+ in capital ready to deploy and you're serious about making an acquisition in the next 90 days.</li>
+          <li>You've looked at STR as an asset class and you want an operator's honest read on whether your target market and property type make sense.</li>
+          <li>You've done deals before but you've never had actual market-level data backing your projections. You want to close that gap.</li>
+          <li>You're not looking for someone to hold your hand or sell you on the dream. You want the analysis and you want to make the decision yourself.</li>
+        </ul>
+      </div>
+      <div class="for-card not-for">
+        <div class="for-label">Not the Right Fit</div>
+        <ul class="for-list">
+          <li>Deploying less than $250K into your acquisition.</li>
+          <li>Timeline longer than 6 months out.</li>
+          <li>Looking for a guaranteed return projection.</li>
+        </ul>
+        <p style="font-size:14px;color:var(--muted);margin-top:20px;line-height:1.7;">If none of that is you, submit your deal. I'll review it and let you know within 48 hours if it's a fit. If it's not, I'll tell you why.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ─── CTA SECTION ─── -->
+<section class="cta-section" id="form">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="cta-eyebrow">Get Started</div>
+      <h2>Ready to get your deal in front of someone who actually runs properties?</h2>
+      <p>Fill out the short form below. I'll review your deal and follow up within 48 hours. If it's a fit, we'll book a call and get started. If it's not, I'll tell you why.</p>
+      <div class="cta-buttons">
+        <a href="https://scd-landing.netlify.app/qualify" class="btn-dark">Submit Your Deal for Analysis</a>
+        <a href="https://api.leadconnectorhq.com/widget/booking/etlzKVWmt6xc1fz2fZMh" class="btn-outline-dark">Book a 15-Minute Call</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">Stark <span>Capital Deployment™</span></div>
+        <p class="footer-tagline">Market analysis and consulting for serious STR investors. Operator-built. Data-driven. Delivered in 5 business days.</p>
+        <div class="footer-company">Stark Industries Property Group LLC · Fort Wayne, IN</div>
+      </div>
+      <div>
+        <div class="footer-col-label">Services</div>
+        <ul class="footer-links">
+          <li><a href="#services">Market Scan — $1,500</a></li>
+          <li><a href="#services">Comprehensive Analysis — $3,500</a></li>
+          <li><a href="#services">Portfolio Advisory — $7,500</a></li>
+          <li><a href="https://scd-landing.netlify.app/qualify">Submit Your Deal for Analysis</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-label">Get in Touch</div>
+        <ul class="footer-links">
+          <li><a href="https://api.leadconnectorhq.com/widget/booking/etlzKVWmt6xc1fz2fZMh">Book a 15-Minute Call</a></li>
+          <li><a href="https://scd-landing.netlify.app/qualify">Submit a Deal</a></li>
+          <li><a href="https://starkindustriespropertygroup.com">starkindustriespropertygroup.com</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="footer-disclaimer">Stark Capital Deployment™ is a market analysis and consulting service operated by Stark Industries Property Group LLC. Joe Stark is an active STR operator and consultant — not a licensed broker, appraiser, or registered investment adviser. This service provides market data analysis, financial modeling, and operator perspective. It is not investment advice, brokerage activity, or securities advisory. All projections are analytical estimates based on available market data and should not be relied upon as guarantees of future performance. Consult a licensed financial advisor, attorney, or real estate professional before making any investment decision. Stark Industries Property Group LLC assumes no liability for investment decisions made based on information provided through this service.</p>
+
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 <span>Stark Industries Property Group LLC</span>. All rights reserved.</div>
+      <div class="footer-copy">Stark Capital Deployment™ is a service of Stark Industries Property Group LLC</div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ─── SCROLL ANIMATIONS ─── -->
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 40) {
+      nav.style.borderBottomColor = 'rgba(244,200,16,0.35)';
+    } else {
+      nav.style.borderBottomColor = 'rgba(244,200,16,0.25)';
+    }
+  });
+</script>
+
+</body>
+</html>
