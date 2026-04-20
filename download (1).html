@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get the Free Guide — 7 STR Market Analysis Mistakes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #000000;
+    --gold:  #F4C810;
+    --white: #FFFFFF;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Lato', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* subtle grain */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  /* gold top rule */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--gold);
+    z-index: 10;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px 80px;
+  }
+
+  /* ── CARD ── */
+  .card {
+    width: 100%;
+    max-width: 560px;
+    border: 1px solid rgba(244,200,16,0.25);
+    border-radius: 4px;
+    padding: 56px 52px 52px;
+    background: rgba(255,255,255,0.035);
+    text-align: center;
+  }
+
+  /* ── EYEBROW ── */
+  .eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+
+  /* ── HEADLINE ── */
+  h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 1.18;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    color: var(--white);
+    margin-bottom: 18px;
+  }
+
+  h1 span { color: var(--gold); }
+
+  /* ── RULE ── */
+  .rule {
+    width: 36px;
+    height: 2px;
+    background: var(--gold);
+    margin: 0 auto 20px;
+  }
+
+  /* ── SUBHEADLINE ── */
+  .sub {
+    font-family: 'Lato', sans-serif;
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 40px;
+  }
+
+  /* ── FORM ── */
+  .form-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .email-input {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 3px;
+    padding: 17px 20px;
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+    text-align: center;
+  }
+
+  .email-input::placeholder { color: rgba(255,255,255,0.28); }
+
+  .email-input:focus {
+    border-color: var(--gold);
+    background: rgba(244,200,16,0.05);
+  }
+
+  .submit-btn {
+    width: 100%;
+    background: var(--gold);
+    border: none;
+    border-radius: 3px;
+    padding: 18px 24px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--black);
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    outline: none;
+    position: relative;
+  }
+
+  .submit-btn:hover  { background: #ffd630; }
+  .submit-btn:active { transform: scale(0.99); }
+
+  .submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* spinner inside button */
+  .spinner {
+    display: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(0,0,0,0.2);
+    border-top-color: var(--black);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .btn-text { display: block; }
+
+  /* ── ERROR ── */
+  .error-msg {
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    color: #ff6b6b;
+    display: none;
+    margin-top: 4px;
+  }
+
+  .error-msg.visible { display: block; }
+
+  /* ── FOOTER NOTE ── */
+  .privacy {
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.22);
+    margin-top: 18px;
+    line-height: 1.5;
+  }
+
+  /* ── BRAND FOOTER ── */
+  .brand-footer {
+    margin-top: 48px;
+    text-align: center;
+  }
+
+  .brand-footer-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.18);
+  }
+
+  .brand-footer-tagline {
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    font-style: italic;
+    color: rgba(244,200,16,0.3);
+    margin-top: 4px;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 580px) {
+    .card {
+      padding: 40px 24px 36px;
+    }
+
+    h1 { font-size: 25px; }
+    .sub { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="card">
+    <div class="eyebrow">Free Guide — Stark Capital Deployment™</div>
+
+    <h1>Get the Free Guide —<br><span>7 STR Market Analysis Mistakes</span></h1>
+
+    <div class="rule"></div>
+
+    <p class="sub">Enter your email and I'll send it immediately.</p>
+
+    <div class="form-wrap">
+      <input
+        type="email"
+        class="email-input"
+        id="emailInput"
+        placeholder="your@email.com"
+        autocomplete="email"
+        inputmode="email"
+      >
+      <div class="error-msg" id="errorMsg">Please enter a valid email address.</div>
+      <button class="submit-btn" id="submitBtn" onclick="handleSubmit()">
+        <span class="btn-text" id="btnText">Send Me the Guide →</span>
+        <div class="spinner" id="spinner"></div>
+      </button>
+    </div>
+
+    <p class="privacy">No spam. Unsubscribe anytime.</p>
+  </div>
+
+  <div class="brand-footer">
+    <div class="brand-footer-name">Stark Industries Property Group</div>
+    <div class="brand-footer-tagline">Acquire With Certainty.</div>
+  </div>
+
+</div>
+
+<script>
+  const WEBHOOK_URL  = 'https://hooks.zapier.com/hooks/catch/18449482/ujiq2h7/';
+  const REDIRECT_URL = 'https://stark-scd-landing.netlify.app/str_mistakes.html';
+
+  async function handleSubmit() {
+    const emailInput = document.getElementById('emailInput');
+    const errorMsg   = document.getElementById('errorMsg');
+    const submitBtn  = document.getElementById('submitBtn');
+    const btnText    = document.getElementById('btnText');
+    const spinner    = document.getElementById('spinner');
+
+    // Clear error
+    errorMsg.classList.remove('visible');
+
+    // Validate
+    const email = emailInput.value.trim();
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRe.test(email)) {
+      errorMsg.classList.add('visible');
+      emailInput.focus();
+      return;
+    }
+
+    // Loading state
+    submitBtn.disabled = true;
+    btnText.style.display = 'none';
+    spinner.style.display = 'block';
+
+    try {
+      await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        mode: 'no-cors',
+        body: JSON.stringify({
+          email: email,
+          lead_magnet: '7 STR Market Analysis Mistakes',
+          source: 'download-page',
+          tags: ['Lead Magnet: STR Mistakes Guide', 'Revenue Engine: Advisory'],
+          submitted_at: new Date().toISOString()
+        })
+      });
+    } catch (e) {
+      console.warn('Webhook note:', e);
+    }
+
+    // Redirect regardless — no-cors means we can't read response
+    window.location.href = REDIRECT_URL;
+  }
+
+  // Enter key support
+  document.getElementById('emailInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') handleSubmit();
+  });
+</script>
+
+</body>
+</html>
