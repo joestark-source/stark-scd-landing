@@ -248,9 +248,23 @@
 
     <div class="rule"></div>
 
-    <p class="sub">Enter your email and I'll send it immediately.</p>
+    <p class="sub">Enter your info and I'll send it immediately.</p>
 
     <div class="form-wrap">
+      <input
+        type="text"
+        class="email-input"
+        id="firstNameInput"
+        placeholder="First Name"
+        autocomplete="given-name"
+      >
+      <input
+        type="text"
+        class="email-input"
+        id="lastNameInput"
+        placeholder="Last Name"
+        autocomplete="family-name"
+      >
       <input
         type="email"
         class="email-input"
@@ -259,7 +273,7 @@
         autocomplete="email"
         inputmode="email"
       >
-      <div class="error-msg" id="errorMsg">Please enter a valid email address.</div>
+      <div class="error-msg" id="errorMsg">Please fill out all fields with a valid email address.</div>
       <button class="submit-btn" id="submitBtn" onclick="handleSubmit()">
         <span class="btn-text" id="btnText">Send Me the Guide →</span>
         <div class="spinner" id="spinner"></div>
@@ -281,21 +295,28 @@
   const REDIRECT_URL = 'https://stark-scd-landing.netlify.app/str_mistakes.html';
 
   async function handleSubmit() {
-    const emailInput = document.getElementById('emailInput');
-    const errorMsg   = document.getElementById('errorMsg');
-    const submitBtn  = document.getElementById('submitBtn');
-    const btnText    = document.getElementById('btnText');
-    const spinner    = document.getElementById('spinner');
+    const firstNameInput = document.getElementById('firstNameInput');
+    const lastNameInput  = document.getElementById('lastNameInput');
+    const emailInput     = document.getElementById('emailInput');
+    const errorMsg       = document.getElementById('errorMsg');
+    const submitBtn      = document.getElementById('submitBtn');
+    const btnText        = document.getElementById('btnText');
+    const spinner        = document.getElementById('spinner');
 
     // Clear error
     errorMsg.classList.remove('visible');
 
     // Validate
-    const email = emailInput.value.trim();
-    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRe.test(email)) {
+    const firstName = firstNameInput.value.trim();
+    const lastName  = lastNameInput.value.trim();
+    const email     = emailInput.value.trim();
+    const emailRe   = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!firstName || !lastName || !emailRe.test(email)) {
       errorMsg.classList.add('visible');
-      emailInput.focus();
+      if (!firstName) firstNameInput.focus();
+      else if (!lastName) lastNameInput.focus();
+      else emailInput.focus();
       return;
     }
 
@@ -310,10 +331,12 @@
         headers: { 'Content-Type': 'application/json' },
         mode: 'no-cors',
         body: JSON.stringify({
-          email: email,
-          lead_magnet: '7 STR Market Analysis Mistakes',
-          source: 'download-page',
-          tags: ['Lead Magnet: STR Mistakes Guide', 'Revenue Engine: Advisory'],
+          firstName:    firstName,
+          lastName:     lastName,
+          email:        email,
+          lead_magnet:  '7 STR Market Analysis Mistakes',
+          source:       'download-page',
+          tags:         ['Lead Magnet: STR Mistakes Guide', 'Revenue Engine: Advisory'],
           submitted_at: new Date().toISOString()
         })
       });
@@ -325,9 +348,11 @@
     window.location.href = REDIRECT_URL;
   }
 
-  // Enter key support
-  document.getElementById('emailInput').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') handleSubmit();
+  // Enter key support on all fields
+  ['firstNameInput', 'lastNameInput', 'emailInput'].forEach(function(id) {
+    document.getElementById(id).addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') handleSubmit();
+    });
   });
 </script>
 
